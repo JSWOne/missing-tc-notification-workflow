@@ -7,24 +7,23 @@ spring:
       target: ${MISSING_TC_NOTIFICATION_WORKFLOW_BASE_URL:localhost:7233}
     namespace: ${MISSING_TC_NOTIFICATION_WORKFLOW_NAMESPACE:default}
     workers:
-      - task-queue: missing-tc-notification-queue
+      - task-queue: ${MISSING_TC_NOTIFICATION_WORKFLOW_TASK_QUEUE:missing-tc-notification-queue}
+    workers-auto-discovery:
+      packages:
+        - com.jswone.missing_tc_notification_workflow.jobs.missingTcNotification.workflow
+        - com.jswone.missing_tc_notification_workflow.jobs.missingTcNotification.activity
 
 external-service:
   services:
     joms:
-      base-url: ${JOMS_BASE_URL:http://localhost:8080/joms/api}
+      base-url: ${JOMS_BASE_URL:https://qa-oms.msme.jswone.in/joms/api}
       api-key: ${JOMS_API_KEY:3f9a2b5f-7bd8-4a51-b11f-47b30decd925}
 
 temporal:
   missing-tc-notification:
-    task-queue: missing-tc-notification-queue
+    task-queue: ${MISSING_TC_NOTIFICATION_WORKFLOW_TASK_QUEUE:missing-tc-notification-queue}
     # schedule
     schedule-id: ${MISSING_TC_NOTIFICATION_WORKFLOW_SCHEDULE_ID:missing-tc-notification-daily-schedule}
     schedule-timezone: ${MISSING_TC_NOTIFICATION_WORKFLOW_SCHEDULE_TZ:Asia/Kolkata}
     schedule-hour: ${MISSING_TC_NOTIFICATION_WORKFLOW_SCHEDULE_HOUR:8}
     schedule-minute: ${MISSING_TC_NOTIFICATION_WORKFLOW_SCHEDULE_MINUTE:0}
-
-logging:
-  level:
-    io.temporal: DEBUG
-    io.temporal.spring.boot: DEBUG

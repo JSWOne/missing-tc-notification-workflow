@@ -1,6 +1,6 @@
 package com.jswone.missing_tc_notification_workflow.jobs.missingTcNotification.workflow;
 
-import com.jswone.missing_tc_notification_workflow.config.Constants;
+import com.jswone.missing_tc_notification_workflow.config.ServiceConstants;
 import com.jswone.missing_tc_notification_workflow.jobs.missingTcNotification.activity.MissingTCActivities;
 import com.jswone.missing_tc_notification_workflow.jobs.missingTcNotification.dto.MissingTCInvoiceDetails;
 import com.jswone.missing_tc_notification_workflow.jobs.missingTcNotification.dto.ShipmentMissingTCDTO;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 
-@WorkflowImpl(taskQueues = "missing-tc-notification-queue")
+@WorkflowImpl(workers = ServiceConstants.TASK_QUEUE)
 public class MissingTCWorkflowImpl implements MissingTCWorkflow {
 
   private static final Logger logger = Workflow.getLogger(MissingTCWorkflowImpl.class);

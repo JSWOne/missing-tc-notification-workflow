@@ -1,8 +1,8 @@
 package com.jswone.missing_tc_notification_workflow.config;
 
-public final class Constants {
+public final class ServiceConstants {
 
-  private Constants() {}
+  private ServiceConstants() {}
 
   public static final String TASK_QUEUE = "missing-tc-notification-queue";
 

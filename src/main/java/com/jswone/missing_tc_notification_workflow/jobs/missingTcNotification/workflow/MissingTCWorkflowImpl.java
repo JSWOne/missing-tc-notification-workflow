@@ -3,7 +3,7 @@ package com.jswone.missing_tc_notification_workflow.jobs.missingTcNotification.w
 import com.jswone.missing_tc_notification_workflow.config.ServiceConstants;
 import com.jswone.missing_tc_notification_workflow.jobs.missingTcNotification.activity.MissingTCActivities;
 import com.jswone.missing_tc_notification_workflow.jobs.missingTcNotification.dto.MissingTCInvoiceDetails;
-import com.jswone.missing_tc_notification_workflow.jobs.missingTcNotification.dto.ShipmentMissingTCDTO;
+import com.jswone.missing_tc_notification_workflow.jobs.missingTcNotification.dto.ShipmentMissingTcDto;
 import com.jswone.missing_tc_notification_workflow.jobs.missingTcNotification.dto.TCInvoiceDetails;
 import io.temporal.activity.ActivityOptions;
 import io.temporal.common.RetryOptions;
@@ -36,7 +36,7 @@ public class MissingTCWorkflowImpl implements MissingTCWorkflow {
 
   @Override
   public void process(LocalDateTime fromDate, LocalDateTime toDate) {
-    List<ShipmentMissingTCDTO> shipments = activities.fetchShipments(fromDate, toDate);
+    List<ShipmentMissingTcDto> shipments = activities.fetchShipments(fromDate, toDate);
 
     if (shipments.isEmpty()) {
       logger.info("No shipments found");
@@ -45,11 +45,13 @@ public class MissingTCWorkflowImpl implements MissingTCWorkflow {
 
     List<Promise<Void>> childPromises = new ArrayList<>();
 
-    for (ShipmentMissingTCDTO shipment : shipments) {
+    for (ShipmentMissingTcDto shipment : shipments) {
       MissingTCNotificationWorkflow child =
           Workflow.newChildWorkflowStub(
               MissingTCNotificationWorkflow.class,
-              ChildWorkflowOptions.newBuilder().setWorkflowId(createWorkflowId(shipment)).build());
+              ChildWorkflowOptions.newBuilder()
+                  .setWorkflowId("missing-tc-" + Workflow.randomUUID())
+                  .build());
 
       Promise<Void> promise = Async.procedure(child::process, convert(shipment));
       childPromises.add(promise);
@@ -58,11 +60,7 @@ public class MissingTCWorkflowImpl implements MissingTCWorkflow {
     Promise.allOf(childPromises).get();
   }
 
-  private String createWorkflowId(ShipmentMissingTCDTO dto) {
-    return "missing-tc-" + dto.getSourceSellerEmail() + "-" + Workflow.randomUUID();
-  }
-
-  private MissingTCInvoiceDetails convert(ShipmentMissingTCDTO dto) {
+  private MissingTCInvoiceDetails convert(ShipmentMissingTcDto dto) {
     MissingTCInvoiceDetails response = new MissingTCInvoiceDetails();
 
     response.setSourceSellerName(dto.getSourceSellerName());

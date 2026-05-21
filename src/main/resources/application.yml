@@ -3,7 +3,11 @@ spring:
     name: missing-tc-notification-workflow
 
   profiles:
-    active: ${PROFILE:qa}
+    active: ${PROFILE}
 
 server:
   port: 8081
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [traceId=%X{traceId}] %logger{1} - %msg%n"

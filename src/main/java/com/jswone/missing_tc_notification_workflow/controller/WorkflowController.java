@@ -25,6 +25,11 @@ public class WorkflowController {
     return ResponseEntity.ok(workflowService.temporalHealthCheck());
   }
 
+  @PostMapping("/schedule/ensure")
+  public ResponseEntity<WorkflowResponse<?>> ensureSchedule() {
+    return ResponseEntity.ok(workflowService.ensureDailySchedule());
+  }
+
   @PostMapping("/trigger")
   public ResponseEntity<WorkflowResponse<?>> trigger() {
     LocalDate yesterday = LocalDate.now().minusDays(1);

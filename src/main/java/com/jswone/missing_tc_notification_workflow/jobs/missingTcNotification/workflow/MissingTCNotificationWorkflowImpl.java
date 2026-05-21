@@ -33,6 +33,11 @@ public class MissingTCNotificationWorkflowImpl implements MissingTCNotificationW
   @Override
   public void process(MissingTCInvoiceDetails missingTCInvoiceDetails) {
     logger.info("Sending notification = {}", missingTCInvoiceDetails);
+
+    String sourceSellerEmail = missingTCInvoiceDetails.getSourceSellerEmail();
+    Workflow.upsertTypedSearchAttributes(
+        ServiceConstants.SOURCE_SELLER_EMAIL.valueSet(sourceSellerEmail));
+
     activities.sendNotification(missingTCInvoiceDetails);
   }
 }

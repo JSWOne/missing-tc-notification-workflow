@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: missing-tc-notification-workflow
+
+  profiles:
+    active: ${PROFILE:qa}
+
+server:
+  port: 8081
+
+logging:
+  level:
+    io.temporal: DEBUG
+    io.temporal.spring.boot: DEBUG

@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: missing-tc-notification-workflow
+
+  temporal:
+    connection:
+      target: ${MISSING_TC-NOTIFICATION-WORKFLOW-BASE-URL}
+    namespace: ${MISSING_TC-NOTIFICATION-WORKFLOW-NAMESPACE}
+    workers:
+      - task-queue: ${MISSING_TC-NOTIFICATION-WORKFLOW-TASK-QUEUE:missing-tc-notification-queue}
+
+external-service:
+  services:
+    joms:
+      base-url: ${JOMS-BASE-URL}
+      api-key: ${JOMS-API-KEY}
+
+temporal:
+  missing-tc-notification:
+    task-queue: ${MISSING_TC-NOTIFICATION-WORKFLOW-TASK-QUEUE:missing-tc-notification-queue}
+    # schedule
+    schedule-id: ${MISSING_TC-NOTIFICATION-WORKFLOW-SCHEDULE-ID:missing-tc-notification-daily-schedule}
+    schedule-timezone: ${MISSING_TC-NOTIFICATION-WORKFLOW-SCHEDULE-TZ:Asia/Kolkata}
+    schedule-hour: ${MISSING_TC-NOTIFICATION-WORKFLOW-SCHEDULE-HOUR:8}
+    schedule-minute: ${MISSING_TC-NOTIFICATION-WORKFLOW-SCHEDULE-MINUTE:0}

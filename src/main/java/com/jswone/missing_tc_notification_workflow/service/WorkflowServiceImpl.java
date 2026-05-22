@@ -2,7 +2,7 @@ package com.jswone.missing_tc_notification_workflow.service;
 
 import com.jswone.missing_tc_notification_workflow.dto.WorkflowResponse;
 import com.jswone.missing_tc_notification_workflow.jobs.missingTcNotification.workflow.MissingTCWorkflow;
-import com.jswone.missing_tc_notification_workflow.properties.MissingTCNotificationProperties;
+import com.jswone.missing_tc_notification_workflow.properties.AppProperties;
 import io.grpc.health.v1.HealthCheckResponse;
 import io.temporal.api.enums.v1.ScheduleOverlapPolicy;
 import io.temporal.api.enums.v1.WorkflowIdReusePolicy;
@@ -27,7 +27,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 
   private final WorkflowClient workflowClient;
   private final ScheduleClient scheduleClient;
-  private final MissingTCNotificationProperties props;
+  private final AppProperties props;
 
   @Override
   public WorkflowResponse<?> temporalHealthCheck() {

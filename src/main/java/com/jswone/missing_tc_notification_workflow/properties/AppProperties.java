@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Data
 @ConfigurationProperties(prefix = "temporal.missing-tc-notification")
-public class MissingTCNotificationProperties {
+public class AppProperties {
   private String taskQueue;
 
   private int startToCloseTimeoutSeconds;

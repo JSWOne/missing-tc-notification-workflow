@@ -4,8 +4,8 @@ spring:
 
   temporal:
     connection:
-      target: ${MISSING_TC_NOTIFICATION_WORKFLOW_BASE_URL:localhost:7233}
-    namespace: ${MISSING_TC_NOTIFICATION_WORKFLOW_NAMESPACE:default}
+      target: ${MISSING_TC_NOTIFICATION_WORKFLOW_BASE_URL}
+    namespace: ${MISSING_TC_NOTIFICATION_WORKFLOW_NAMESPACE}
     workers:
       - task-queue: ${MISSING_TC_NOTIFICATION_WORKFLOW_TASK_QUEUE:missing-tc-notification-queue}
     workers-auto-discovery:

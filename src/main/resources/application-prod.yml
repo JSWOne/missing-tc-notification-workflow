@@ -1,6 +1,9 @@
 spring:
   application:
     name: missing-tc-notification-workflow
+  cloud:
+    gcp:
+      project-id: ${GCP-PROJECT-ID:jswone-prod-service}
 
   temporal:
     connection:

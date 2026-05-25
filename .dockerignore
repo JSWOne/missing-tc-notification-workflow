@@ -1,0 +1,12 @@
+.git
+.idea
+.vscode
+
+*.iml
+*.log
+
+target/*.original
+target/test-classes
+
+src
+README.md

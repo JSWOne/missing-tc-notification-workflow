@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/missing-tc-notification-workflow")
 public class WorkflowController {
 
   private final WorkflowService workflowService;

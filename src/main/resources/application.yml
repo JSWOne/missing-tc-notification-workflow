@@ -1,14 +1,22 @@
 spring:
   application:
     name: missing-tc-notification-workflow
-
   profiles:
-    active: ${PROFILE:qa}
+    active: ${PROFILE}
 
 server:
-  port: 8081
+  port: 8080
 
 logging:
-  level:
-    io.temporal: DEBUG
-    io.temporal.spring.boot: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [traceId=%X{traceId}] %logger{1} - %msg%n"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      probes:
+        enabled: true

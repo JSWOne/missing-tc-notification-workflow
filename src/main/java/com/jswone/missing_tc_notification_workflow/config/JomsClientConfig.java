@@ -21,7 +21,7 @@ public class JomsClientConfig {
     RestClient.Builder client = builder.baseUrl(joms.getBaseUrl());
 
     if (StringUtils.hasText(joms.getApiKey())) {
-      client.defaultHeader(Constants.X_API_KEY, joms.getApiKey());
+      client.defaultHeader(ServiceConstants.X_API_KEY, joms.getApiKey());
     }
 
     client.defaultHeader(HttpHeaders.CONTENT_TYPE, "application/json");

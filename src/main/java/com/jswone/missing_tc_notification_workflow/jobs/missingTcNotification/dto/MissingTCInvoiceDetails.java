@@ -3,8 +3,7 @@ package com.jswone.missing_tc_notification_workflow.jobs.missingTcNotification.d
 import java.util.List;
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

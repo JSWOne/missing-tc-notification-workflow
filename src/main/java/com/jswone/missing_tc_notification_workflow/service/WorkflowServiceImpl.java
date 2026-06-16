@@ -2,13 +2,16 @@ package com.jswone.missing_tc_notification_workflow.service;
 
 import com.jswone.missing_tc_notification_workflow.dto.WorkflowResponse;
 import com.jswone.missing_tc_notification_workflow.jobs.missingTcNotification.workflow.MissingTCWorkflow;
-import com.jswone.missing_tc_notification_workflow.properties.MissingTCNotificationProperties;
+import com.jswone.missing_tc_notification_workflow.properties.AppProperties;
 import io.grpc.health.v1.HealthCheckResponse;
 import io.temporal.api.enums.v1.ScheduleOverlapPolicy;
+import io.temporal.api.enums.v1.WorkflowIdReusePolicy;
 import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowOptions;
 import io.temporal.client.schedules.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +27,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 
   private final WorkflowClient workflowClient;
   private final ScheduleClient scheduleClient;
-  private final MissingTCNotificationProperties props;
+  private final AppProperties props;
 
   @Override
   public WorkflowResponse<?> temporalHealthCheck() {
@@ -45,10 +48,15 @@ public class WorkflowServiceImpl implements WorkflowService {
   @Override
   public WorkflowResponse<?> triggerMissingTCWorkflow(
       LocalDateTime fromDate, LocalDateTime toDate) {
+    DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
+    String workFlowIdSuffix = LocalDateTime.now(ZoneId.of("Asia/Kolkata")).format(FORMATTER);
+
     WorkflowOptions workflowOptions =
         WorkflowOptions.newBuilder()
             .setTaskQueue(props.getTaskQueue())
-            .setWorkflowId("missing-tc-" + System.currentTimeMillis())
+            .setWorkflowId("missing-tc-" + workFlowIdSuffix)
+            .setWorkflowIdReusePolicy(
+                WorkflowIdReusePolicy.WORKFLOW_ID_REUSE_POLICY_ALLOW_DUPLICATE)
             .build();
 
     MissingTCWorkflow workflow =
@@ -103,11 +111,9 @@ public class WorkflowServiceImpl implements WorkflowService {
       return success(scheduleId, "CREATED");
     } catch (ScheduleException e) {
       String msg = Optional.ofNullable(e.getMessage()).orElse("").toLowerCase();
-
       if (msg.contains("already exists") || msg.contains("exists")) {
         return success(scheduleId, "ALREADY_EXISTS");
       }
-
       log.error("Failed creating schedule {} - {}", scheduleId, e.getMessage());
       return failure(e.getMessage());
     }

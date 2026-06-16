@@ -1,7 +1,7 @@
 package com.jswone.missing_tc_notification_workflow.client;
 
 import com.jswone.missing_tc_notification_workflow.jobs.missingTcNotification.dto.MissingTCInvoiceDetails;
-import com.jswone.missing_tc_notification_workflow.jobs.missingTcNotification.dto.ShipmentMissingTCDTO;
+import com.jswone.missing_tc_notification_workflow.jobs.missingTcNotification.dto.ShipmentMissingTcDto;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -26,11 +26,11 @@ public class JomsClient {
   private static final String SEND_NOTIFICATION =
       "/internal/v1/shipment/send-missing-tc-notification";
 
-  public List<ShipmentMissingTCDTO> fetchShipmentsWithMissingTC(
+  public List<ShipmentMissingTcDto> fetchShipmentsWithMissingTC(
       LocalDateTime fromDate, LocalDateTime toDate) {
     try {
       log.info("Fetching shipments with missing TC from={} to={}", fromDate, toDate);
-      List<ShipmentMissingTCDTO> response =
+      List<ShipmentMissingTcDto> response =
           jomsRestClient
               .get()
               .uri(
